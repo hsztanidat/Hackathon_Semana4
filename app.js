@@ -30,7 +30,47 @@ const loadJson = async function(url) {
   }
   
   loadJson(url)
+
   
+//Ejercicio 4
+class HttpError extends Error {
+    constructor(response) {
+      super(`${response.status} for ${response.url}`);
+      this.name = "HttpError";
+      this.response = response;
+    }
+  }
+  
+  function loadJson(url) {
+    return fetch(url).then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      } else {
+        throw new HttpError(response);
+      }
+    });
+  }
+  
+  const demoGithubUser = async function () {
+    try {
+      let name = prompt("Enter a name?", "iliakan");
+      const user = await loadJson(`https://api.github.com/users/${name}`);
+      alert(`Full name: ${user.name}.`);
+      return user;
+    } catch (err) {
+      console.dir(err);
+      if (err instanceof HttpError && err.response.status == 404) {
+        alert("No such user, please reenter.");
+        return demoGithubUser();
+      } else {
+        throw err;
+      }
+    }
+  };
+  
+  demoGithubUser();
+
+
   
 //Ejercicio 5
 async function wait() {
@@ -57,11 +97,12 @@ const printNumbers = function (desde, hasta) {
   
 printNumbers(2, 8)
 
-const printNumbers2 = function (beg, end) {
+
+const printNumbersOut = function (desde, hasta) {
     setTimeout(() => {
-      console.log(beg++)
-      if (beg < end) {
-      printNumbers2(beg, end)
+      console.log(desde)
+      if (desde < hasta) {
+      printNumbers2(desde + 1, hasta)
     }
     }, 1000)
   }
