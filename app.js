@@ -43,3 +43,27 @@ async function wait() {
   
 //Ejercicio 6
 //El .catch se va a activar ya que el .catch tambien se activa con un error
+
+
+//Ejercicio 7
+const printNumbers = function (desde, hasta) {
+    setInterval(() => {
+    if (desde > hasta) {
+      return
+    }
+    console.log(desde++)
+    }, 1000)
+  }
+  
+printNumbers(2, 8)
+
+const printNumbers2 = function (beg, end) {
+    setTimeout(() => {
+      console.log(beg++)
+      if (beg < end) {
+      printNumbers2(beg, end)
+    }
+    }, 1000)
+  }
+  
+printNumbers2(2, 8)
